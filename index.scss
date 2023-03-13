@@ -1,0 +1,253 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: #021027;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.background {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+
+  mask-image: radial-gradient(
+    white 0%,
+    white 30%,
+    transparent 80%,
+    transparent
+  );
+}
+
+.circle-container {
+  $particleNum: 200;
+  $particleColor: hsl(180, 100%, 80%);
+
+  position: absolute;
+  transform: translateY(-10vh);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  .circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    background-image: radial-gradient(
+      rgb(231, 154, 90),
+      rgb(231, 154, 90) 10%,
+      hsla(180, 100%, 80%, 0) 56%
+    );
+
+    animation: fadein-frames 200ms infinite, scale-frames 2s infinite;
+
+    @keyframes fade-frames {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes scale-frames {
+      0% {
+        transform: scale3d(0.4, 0.4, 1);
+      }
+
+      50% {
+        transform: scale3d(2.2, 2.2, 1);
+      }
+
+      100% {
+        transform: scale3d(0.4, 0.4, 1);
+      }
+    }
+  }
+
+  $particleBaseSize: 8;
+
+  
+  @for $i from 1 through $particleNum {
+    &:nth-child(#{$i}) {
+      $circleSize: random($particleBaseSize);
+      width: $circleSize + px;
+      height: $circleSize + px;
+
+      $startPositionY: random(10) + 100;
+      $framesName: "move-frames-" + $i;
+      $moveDuration: 28000 + random(9000) + ms;
+
+      animation-name: #{$framesName};
+      animation-duration: $moveDuration;
+      animation-delay: random(37000) + ms;
+
+      @keyframes #{$framesName} {
+        from {
+          transform: translate3d(
+            #{random(100) + vw},
+            #{$startPositionY + vh},
+            0
+          );
+        }
+
+        to {
+          transform: translate3d(
+            #{random(100) + vw},
+            #{- $startPositionY - random(30) + vh},
+            0
+          );
+        }
+      }
+
+      .circle {
+        animation-delay: random(4000) + ms;
+      }
+    }
+  }
+}
+
+.message {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  color: white;
+  font-family: "Josefin Slab", serif;
+  line-height: 27px;
+  font-size: 18px;
+  text-align: right;
+  pointer-events: none;
+  animation: message-frames 1.5s ease 5s forwards;
+  opacity: 0;
+  
+  @keyframes message-frames {
+    from {
+      opacity: 0;
+    }
+    
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.btn-area{
+  position: fixed;
+  top: 76%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+}
+
+.arrow-left{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-bottom: 1px solid rgb(231, 154, 90);
+  border-right: 1px solid rgb(231, 154, 90);
+  transform: rotate(135deg);
+  margin-left: -15%;
+  margin-bottom: -1%;
+  animation: animate-arrowleft 2s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.arrow-right{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-bottom: 1px solid rgb(231, 154, 90);
+  border-right: 1px solid rgb(231, 154, 90);
+  transform: rotate(315deg);
+  margin-left: -5%;
+  margin-bottom: -1%;
+  animation: animate-arrowright 2s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes animate-arrowleft {
+  0%{
+    margin-bottom: -7%;
+    transform: rotate(135deg) translateX(-80%)
+  }
+  50%{
+    margin-bottom: -2%;
+    transform: rotate(135deg) translateX(0)
+  }
+  100%{
+    margin-bottom: -7%;
+    transform: rotate(135deg) translateX(-80%)
+  }
+}
+
+@keyframes animate-arrowright {
+  0%{
+    margin-bottom: -2%;
+    transform: rotate(315deg) translateX(0)
+    
+  }
+  50%{
+    margin-bottom: -7%;
+    transform: rotate(315deg) translateX(80%)
+  }
+  100%{
+    margin-bottom: -2%;
+    transform: rotate(315deg) translateX(0)
+  }
+}
+
+.btn {
+  display:inline-block;
+  white-space: nowrap;
+  position: relative;
+  color: rgb(231, 154, 90);
+  font-weight: 500;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 15px 50px;
+  text-align: center;
+  clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+  background-color: rgba(249, 246, 247, 0.100);
+  background-image: rgba(249, 246, 247, 0.022);
+  border: solid 1px rgb(231, 154, 90);
+  background-repeat: no-repeat;
+  transition: background-position-y ease-in-out 250ms;
+}
+
+.btn:hover {
+  background-color: rgba(231, 154, 90, 0.145);
+}
+
+.btn:active{
+  transform: translateY(4px);
+}
+
+
+@media only screen and (max-width: 475px) {
+  .arrow-right{
+    margin-left: calc(-5% - 8px);
+  }
+}
